@@ -1,6 +1,6 @@
 from sys import exit
 
-DEBUG = True
+DEBUG = False
 EDEBUG = False
 
 # format: (name, value)
@@ -243,9 +243,11 @@ def parse(s):
     isnum = True
     isnum_amountPre = 0
     isnum_amountCom = 0
+    amountNum = 0
     for c in s:
         c = ord(c)
         if c > 47 and c < 58:
+            amountNum += 1
             continue
         if c == 46:
             isnum_amountCom += 1
@@ -260,6 +262,9 @@ def parse(s):
                 isnum = False
             else:
                 continue
+        isnum = False
+
+    if amountNum == 0:
         isnum = False
 
     if isnum:
@@ -339,6 +344,20 @@ def parse(s):
                             return parse(fargs[2])
                         else:
                             return False
+
+                    if fname == "with": # [var name (string)]=[value], ops...   and returns result of last expression
+                        if len(fargs) < 2:
+                            print("invalid arguments")
+                            exit()
+                        a = fargs[0].split("=")
+                        oldvars = variables
+                        variables.append((a[0], parse(a[1].strip())))
+
+                        for exp in fargs[1:]:
+                            val = parse(exp.strip())
+                        
+                        variables = oldvars
+                        return val
                     
                 oldvars = variables
 
@@ -372,10 +391,11 @@ def parse(s):
                     evars = {}
                     if len(argn) > 0:
                         for argi, arg in enumerate(fargs):
-                            if is_literal(arg):
-                                evars[argn[argi]] = rs(arg)
-                            else:
-                                evars[argn[argi]] = rs(parse(sr(arg)))
+                            evars[argn[argi]] = rs(parse(arg))
+                            #if is_literal(arg):
+                            #    evars[argn[argi]] = rs(arg)
+                            #else:
+                            #    evars[argn[argi]] = rs(parse(sr(arg)))
                     debug("- ", evars)
                     if py_func_code != "":
                         val = sr(eval(py_func_code, evars))

@@ -1,0 +1,27 @@
+PATH += "math.l;"
+PATH += "io.l;"
+PATH += "flow.l;"
+PATH += "types.l;"
+
+fin() = float(input())
+
+oadd() = add(fin(), fin())
+osub() = sub(fin(), fin())
+omul() = mul(fin(), fin())
+odiv() = div(fin(), fin())
+
+cont() = with(												+
+	op=input(),												+
+	if(op=="+", oadd(),  									+
+		if(op=="-", osub(), 								+
+			if(op=="*", omul(),								+
+				if(op=="/", odiv(), "Invalid operation!")	+
+			)												+
+		)													+
+	)														+
+)
+
+main() = before(											+
+	print("Enter the operation. possible: + - * /"),		+
+	cont()													+
+)
