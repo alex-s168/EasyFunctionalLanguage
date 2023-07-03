@@ -1,0 +1,45 @@
+PATH += "str.l;"
+PATH += "math.l;"
+PATH += "types.l;"
+PATH += "io.l;"
+PATH += "arr.l;"
+PATH += "flow.l;"
+
+test = 2
+
+name() = input()
+test(a,b) = add(mul(a, b), test)
+
+stuff(args) = concat(				+
+				str(test(3, 2)), 	+
+				name()				+
+			)
+
+print-hello() = concat(
+				+	"Hello, ",
+				+	str(list(name())),
+				+	"!"
+			    +)
+
+main() = print-hello()
+
+main() = do(		+
+	print("Hi!"),	+
+	print("Bye!")	+
+)
+
+main() = before(	+
+	print("hi"),	+
+	input()			+
+)
+
+main() = !true
+
+acces() = "Hello admin!"
+noacces() = "No acces!"
+
+main() = if(				+
+	input() == "Alex", 		+
+	acces(), 				+
+	noacces()				+
+)
