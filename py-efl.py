@@ -407,7 +407,8 @@ def _parse(s):
                     if fname == "with" and len(fargs) > 1: # [var name (string)]=[value], ops...   and returns result of last expression
                         a = fargs[0].split("=")
                         oldvars = variables.copy()
-                        variables.append((a[0], parse("=".join(a[1:]).strip())))
+                        y = [a[0], parse("=".join(a[1:]).strip())]
+                        variables.append(y)
 
                         for exp in fargs[1:]:
                             val = parse(exp.strip())
@@ -476,7 +477,12 @@ def _parse(s):
     
     if "==" in s:
         sp = s.split("==")
-        return rs(parse(sp[0].strip())) == rs(parse(sp[1].strip()))
+        v1 = rs(parse(sp[0].strip())) 
+        v2 = rs(parse(sp[1].strip()))
+
+        debug("comparing with op ==:", v1, v2)
+
+        return v1 == v2
     if "!=" in s:
         sp = s.split("!=")
         return rs(parse(sp[0].strip())) != rs(parse(sp[1].strip()))
@@ -550,6 +556,7 @@ for lib in pathv.split(";"):
         functions.append(["list", ["a"], "", "list(a)"])
         functions.append(["ascii", ["a"], "", "ord(a)"])
         functions.append(["chr", ["a"], "", "chr(int(a))"])
+        functions.append(["isnum", ["a"], "", "(type(a) == int) or (type(a) == float)"])
     elif lib == "math.l":
         functions.append(["mul", ["a", "b"], "", "a * b"])
         functions.append(["add", ["a", "b"], "", "a + b"])
