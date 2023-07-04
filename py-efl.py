@@ -15,6 +15,7 @@ functions = []
 
 using_flow_l = False
 using_arr_l = False
+using_prg_l = False
 
 
 def debug(*m):
@@ -320,6 +321,10 @@ def _parse(s):
                 parsingv = ""
                 # done parsing
 
+                if using_prg_l:
+                    if fname == "exit" and len(fargs) == 0:
+                        exit()
+
                 if using_arr_l:
                     if fname == "filter" and len(fargs) == 2:   # applies filter [arg 1] on array [arg 2]
                         a = fargs[0].split("=>")
@@ -538,6 +543,7 @@ stdlibs = [
     "io.l",         # input and output shit
     "arr.l",        # arrays
     "flow.l",        # change the flow of the programm
+    "prg.l",
 ]
 
 for lib in pathv.split(";"):
@@ -576,6 +582,8 @@ for lib in pathv.split(";"):
         functions.append(["sort", ["arr"], "", "arr.sort()"])
         functions.append(["get", ["index", "arr"], "", "arr[index]"])
         functions.append(["sublist", ["from", "to", "arr"], "", "arr[from:to]"])
+    elif lib == "prg.l":
+        using_prg_l = True
     else:
         if not os.path.exists(lib):
             print("Library",lib,"not found!")

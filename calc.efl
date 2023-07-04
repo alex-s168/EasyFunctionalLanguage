@@ -2,8 +2,19 @@ PATH += "math.l;"
 PATH += "io.l;"
 PATH += "flow.l;"
 PATH += "types.l;"
+PATH += "prg.l;"
 
-fin() = float(input())
+fin() = with(								+
+	x=input(),								+
+	if(										+
+		isnum(x),							+
+		float(x),							+
+		do(									+
+			print("Not a number!"),			+
+			exit()							+
+		)									+
+	)										+
+)
 
 oadd() = add(fin(), fin())
 osub() = sub(fin(), fin())
